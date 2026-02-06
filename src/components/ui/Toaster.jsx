@@ -5,7 +5,7 @@ import {
 	ToastProvider,
 	ToastTitle,
 	ToastViewport,
-} from './toast';
+} from './Toast';
 import { useToast } from './use-toast';
 import React from 'react';
 
