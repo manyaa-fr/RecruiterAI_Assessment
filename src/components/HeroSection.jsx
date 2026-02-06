@@ -54,7 +54,7 @@ function HeroSection() {
               name="Sarah K." 
               role="Founder at TechStart" 
               text="Candidates wait 3 weeks for replies while I'm juggling everything. We're losing great talent to competitors." 
-              position="top-[-20px] left-[-250px]" 
+              position="top-[-10px] left-[-250px]" 
               delay={0.2} 
               color="#3B82F6"
               initials="SK"

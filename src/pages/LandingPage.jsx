@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import HeroSection from '../components/HeroSection';
+import HowItWorksSection from '../components/HowItWorksSection';
 
 function LandingPage() {
   return (
@@ -13,6 +14,7 @@ function LandingPage() {
         </Helmet>
         <div className="min-h-screen bg-white overflow-x-hidden">
             <HeroSection />
+            <HowItWorksSection />
         </div>
     </>
   );
