@@ -6,6 +6,7 @@ import BenefitsSection from '../components/BenefitsSection';
 import LogoSliderSection from '../components/LogoSliderSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import FAQSection from '../components/FAQSection';
+import FinalCTA from '../components/FinalCTA';
 
 function LandingPage() {
   return (
@@ -25,6 +26,7 @@ function LandingPage() {
             <LogoSliderSection />
             <TestimonialsSection />
             <FAQSection />
+            <FinalCTA />
         </div>
     </>
   );
