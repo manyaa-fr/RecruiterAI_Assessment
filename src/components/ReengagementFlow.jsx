@@ -5,152 +5,177 @@ import {
   Clock,
   RefreshCw,
   Send,
-  HelpCircle,
   Rocket,
-  Repeat,
-  Diamond
+  UserPlus
 } from 'lucide-react';
 
-/* ---------- Timeline Stage ---------- */
-const Stage = ({
-  icon: Icon,
-  title,
-  subtitle,
-  delay,
-  isLast,
-  isDecision
-}) => (
-  <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay, duration: 0.45 }}
-    className="relative pl-8 pb-8 last:pb-0"
-  >
-    {/* Vertical Line */}
-    {!isLast && (
-      <div className="absolute left-[19px] top-10 bottom-0 w-0.5 bg-gradient-to-b from-purple-200 to-purple-100" />
-    )}
+/* ---------- ORBIT ITEM ---------- */
+const OrbitItem = ({ icon: Icon, angle, delay, color, label }) => {
+  const radius = 140;
+  const x = Math.cos((angle * Math.PI) / 180) * radius;
+  const y = Math.sin((angle * Math.PI) / 180) * radius;
 
-    {/* Icon */}
-    <div
-      className={`absolute left-0 top-0 w-10 h-10 flex items-center justify-center border-4 border-white shadow-md z-10
-        ${
-          isDecision
-            ? 'bg-purple-100 text-purple-600 rotate-45 rounded-lg'
-            : 'bg-purple-50 text-purple-600 rounded-full'
-        }`}
+  return (
+    <motion.div
+      className="absolute w-10 h-10 bg-white rounded-full shadow-md border flex items-center justify-center z-10"
+      style={{
+        borderColor: color,
+        x,
+        y,
+        left: '50%',
+        top: '50%',
+        marginLeft: -20,
+        marginTop: -20
+      }}
+      initial={{ scale: 0, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
     >
-      <Icon className={`w-5 h-5 ${isDecision ? '-rotate-45' : ''}`} />
-    </div>
+      <Icon className="w-5 h-5" style={{ color }} />
+      <span className="absolute -bottom-6 text-[10px] text-gray-600 font-semibold whitespace-nowrap">
+        {label}
+      </span>
+    </motion.div>
+  );
+};
 
-    {/* Content */}
-    <div className="ml-6 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-      <h4 className="font-bold text-gray-900 text-sm">{title}</h4>
-      <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-    </div>
-  </motion.div>
-);
+/* ---------- DECISION NODE ---------- */
+const DecisionNode = ({ angle, delay }) => {
+  const radius = 140;
+  const x = Math.cos((angle * Math.PI) / 180) * radius;
+  const y = Math.sin((angle * Math.PI) / 180) * radius;
 
-/* ---------- Main Component ---------- */
+  return (
+    <motion.div
+      className="absolute w-12 h-12 bg-white border-2 border-blue-500 shadow-md flex items-center justify-center z-20 rotate-45"
+      style={{
+        x,
+        y,
+        left: '50%',
+        top: '50%',
+        marginLeft: -24,
+        marginTop: -24
+      }}
+      initial={{ scale: 0, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+    >
+      <RefreshCw className="-rotate-45 w-5 h-5 text-blue-600" />
+      <span className="absolute top-14 left-1/2 -translate-x-1/2 rotate-0 text-[10px] text-blue-700 font-bold whitespace-nowrap">
+        New role opens?
+        </span>
+    </motion.div>
+  );
+};
+
+/* ---------- COMPONENT ---------- */
 export default function ReengagementFlow() {
   return (
-    <div className="w-full bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden relative min-h-[600px] flex flex-col">
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50/30 to-white" />
+    <div className="relative bg-gradient-to-br from-blue-50 via-blue-100 to-white rounded-3xl shadow-xl border border-blue-100 p-6 h-[600px] flex flex-col">
 
-      <div className="p-6 md:p-8 z-10 flex-1 flex flex-col h-full">
-        {/* Header */}
-        <div className="mb-6">
-          <h3 className="text-xl font-bold text-gray-900">
-            Passive Re-engagement
-          </h3>
-          <p className="text-gray-500 text-sm">
-            Automatically revive strong candidates
-          </p>
+      {/* Badge */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 rounded-full text-xs font-semibold text-blue-600 shadow">
+        Passive Re-engagement
+      </div>
+
+      {/* Header */}
+      <div className="mt-8 mb-6 text-center z-10">
+        <h3 className="text-xl font-bold text-gray-900">Passive Candidate <br /> Re-engagement</h3>
+        <p className="text-sm text-gray-600">
+          Automated re-engagement cycle
+        </p>
+      </div>
+
+      {/* Entry Label */}
+      <div className="text-center text-xs font-semibold text-blue-700 mb-2">
+        Entry: Rejected candidates scoring 60–74%
+      </div>
+
+      {/* Orbit Area */}
+      <div className="flex-1 relative flex items-center justify-center overflow-visible">
+
+        {/* Orbit Ring + Direction */}
+        <div className="absolute w-[280px] h-[280px] border border-dashed border-blue-300 rounded-full">
+          <span className="absolute -right-3 top-1/2 text-blue-400 text-sm">
+            →
+          </span>
         </div>
 
-        {/* Timeline */}
-        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative">
-          <Stage
-            icon={Database}
-            title="Talent Pool"
-            subtitle="Qualified candidates stored automatically"
-            delay={0.1}
+        <motion.div
+          className="absolute w-[280px] h-[280px] border border-transparent border-t-blue-400/40 rounded-full"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Center Hub */}
+        <div className="w-24 h-24 bg-white rounded-full shadow-xl border-4 border-blue-200 flex flex-col items-center justify-center z-20 relative">
+          <Database className="w-8 h-8 text-blue-600 mb-1" />
+          <span className="text-[10px] font-bold text-gray-600">Talent DB</span>
+          <motion.div
+            className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            +12%
+          </motion.div>
+        </div>
+
+        {/* Orbit Nodes */}
+        <div className="absolute inset-0">
+          <OrbitItem
+            icon={UserPlus}
+            angle={270}
+            delay={0.2}
+            color="#9CA3AF"
+            label="Added to pool"
           />
 
-          <Stage
+          <OrbitItem
             icon={Clock}
-            title="Cooling Period"
-            subtitle="Wait 60–90 days before re-contact"
-            delay={0.3}
+            angle={330}
+            delay={0.4}
+            color="#F59E0B"
+            label="Wait 3 months"
           />
 
-          <Stage
-            icon={RefreshCw}
-            title="New Role Match"
-            subtitle="AI detects relevant job opening"
-            delay={0.5}
-          />
+          <DecisionNode angle={30} delay={0.6} />
 
-          <Stage
+          <OrbitItem
             icon={Send}
-            title="Re-engagement Email"
-            subtitle="Personalized outreach sent automatically"
-            delay={0.7}
+            angle={90}
+            delay={0.8}
+            color="#8B5CF6"
+            label="Re-engage email"
           />
 
-          {/* Decision Block */}
-          <div className="relative pl-8 pb-8">
-            {/* Stem */}
-            <div className="absolute left-[19px] top-0 h-8 w-0.5 bg-purple-200" />
+          <OrbitItem
+            icon={Rocket}
+            angle={150}
+            delay={1.0}
+            color="#10B981"
+            label="Fast-track interview"
+          />
 
-            {/* Decision Icon */}
-            <div className="absolute left-0 top-0 w-10 h-10 bg-purple-100 text-purple-600 rotate-45 rounded-lg flex items-center justify-center border-4 border-white shadow-md z-10">
-              <Diamond className="w-5 h-5 -rotate-45" />
-            </div>
-
-            {/* Outcomes */}
-            <div className="ml-6 grid grid-cols-2 gap-4 mt-2">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 }}
-                className="bg-green-50 border border-green-100 p-3 rounded-lg"
-              >
-                <div className="text-xs font-bold text-green-700 mb-1">
-                  Candidate Interested
-                </div>
-                <div className="flex items-center gap-2 text-xs text-green-600">
-                  <Rocket className="w-3 h-3" />
-                  Fast-track to Interview
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
-                className="bg-gray-50 border border-gray-200 p-3 rounded-lg opacity-70"
-              >
-                <div className="text-xs font-bold text-gray-700 mb-1">
-                  No Response
-                </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <Repeat className="w-3 h-3" />
-                  Keep in Talent Pool
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
-          <Stage
-            icon={HelpCircle}
-            title="Continuous Monitoring"
-            subtitle="Candidate stays warm for future roles"
+          <OrbitItem
+            icon={RefreshCw}
+            angle={210}
             delay={1.2}
-            isLast
+            color="#6366F1"
+            label="Loop next quarter"
           />
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+        <span className="text-sm font-medium text-gray-500">
+          Pipeline Growth
+        </span>
+        <span className="text-blue-600 font-bold text-sm">
+          Auto-growing
+        </span>
       </div>
     </div>
   );

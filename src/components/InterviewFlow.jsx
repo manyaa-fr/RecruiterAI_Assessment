@@ -1,138 +1,130 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Video, BarChart, Calendar, X, User, Star, Mail, CheckCircle2, Diamond } from 'lucide-react';
+import {
+  CheckCircle2,
+  Video,
+  BarChart3,
+  GitBranch,
+  UserCheck,
+  Star,
+  XCircle
+} from 'lucide-react';
 
-const Stage = ({ icon: Icon, title, subtitle, delay, isLast, isDecision, outcome }) => (
+/* ---------- CONNECTORS ---------- */
+const VerticalLine = ({ delay = 0 }) => (
   <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    whileInView={{ opacity: 1, x: 0 }}
+    initial={{ scaleY: 0 }}
+    whileInView={{ scaleY: 1 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.4 }}
+    className="w-px h-6 bg-blue-300 origin-top"
+  />
+);
+
+const BranchCurve = ({ delay = 0 }) => (
+  <motion.svg
+    width="100%"
+    height="28"
+    viewBox="0 0 100 28"
+    initial={{ pathLength: 0 }}
+    whileInView={{ pathLength: 1 }}
     viewport={{ once: true }}
     transition={{ delay, duration: 0.5 }}
-    className="relative pl-8 pb-8 last:pb-0"
   >
-    {/* Vertical Line */}
-    {!isLast && (
-      <div className="absolute left-[19px] top-10 bottom-0 w-0.5 bg-gradient-to-b from-blue-200 to-blue-100"></div>
-    )}
-    
-    {/* Icon Node */}
-    <div className={`absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-md z-10 ${
-      outcome === 'positive' ? 'bg-green-100 text-green-600' : 
-      outcome === 'negative' ? 'bg-red-100 text-red-600' : 
-      isDecision ? 'bg-purple-100 text-purple-600 rotate-45 rounded-lg' : 'bg-blue-50 text-blue-600'
-    }`}>
-      <Icon className={`w-5 h-5 ${isDecision ? '-rotate-45' : ''}`} />
-    </div>
-
-    {/* Content Card */}
-    <div className="ml-6 bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-default group">
-      <div className="flex justify-between items-start">
-        <div>
-          <h4 className="font-bold text-gray-900 text-sm">{title}</h4>
-          <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-        </div>
-        <motion.div 
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          transition={{ delay: delay + 0.3 }}
-        >
-          <CheckCircle2 className="w-4 h-4 text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-        </motion.div>
-      </div>
-    </div>
-  </motion.div>
+    <motion.path
+      d="M 50 0 C 50 14, 10 14, 10 28"
+      stroke="#93C5FD"
+      strokeWidth="2"
+      fill="none"
+    />
+    <motion.path
+      d="M 50 0 C 50 14, 90 14, 90 28"
+      stroke="#93C5FD"
+      strokeWidth="2"
+      fill="none"
+    />
+  </motion.svg>
 );
+
+/* ---------- NODE ---------- */
+const Node = ({ icon: Icon, label, variant, delay }) => {
+  const styles = {
+    primary: 'bg-blue-50 border-blue-200 text-blue-700',
+    success: 'bg-green-50 border-green-200 text-green-700',
+    danger: 'bg-red-50 border-red-200 text-red-700',
+    decision: 'bg-purple-50 border-purple-200 text-purple-700'
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.35 }}
+      className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-sm ${styles[variant]}`}
+    >
+      <Icon className="w-5 h-5" />
+      <span className="text-xs font-bold">{label}</span>
+    </motion.div>
+  );
+};
 
 export default function InterviewFlow() {
   return (
-    <div className="w-full bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden relative h-[600px] flex flex-col">
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-blue-50/30 to-white"></div>
-      
-      <div className="p-6 md:p-8 z-10 flex-1 flex flex-col h-full">
-        <div className="mb-6 flex justify-between items-end">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">Multi-Stage Interview</h3>
-            <p className="text-gray-500 text-sm">Automated coordination & scoring</p>
+    <div className="relative bg-gradient-to-br from-blue-50 via-blue-100 to-white rounded-3xl shadow-xl border border-blue-100 p-6 min-h-[520px] flex flex-col">
+
+      {/* Badge */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 rounded-full text-xs font-semibold text-blue-600 shadow">
+        Multi-Stage Interviewing
+      </div>
+
+      {/* Header */}
+      <div className="mt-8 mb-6 text-center">
+        <h3 className="text-xl font-bold text-gray-900">Multi-Stage Interview Process Automation</h3>
+        <p className="text-sm text-gray-600">
+          Smart branching with AI evaluation
+        </p>
+      </div>
+
+      {/* FLOW */}
+      <div className="flex-1 overflow-y-auto pb-24">
+        <div className="flex flex-col items-center">
+
+          <Node icon={CheckCircle2} label="Invite Accepted" variant="success" delay={0} />
+          <VerticalLine delay={0.1} />
+
+          <Node icon={Video} label="AI Video Interview" variant="primary" delay={0.2} />
+          <VerticalLine delay={0.3} />
+
+          <Node icon={BarChart3} label="AI Scoring" variant="decision" delay={0.4} />
+
+          <BranchCurve delay={0.5} />
+
+          <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+            <Node icon={XCircle} label="Auto-Reject (<80%)" variant="danger" delay={0.6} />
+            <Node icon={GitBranch} label="Pass (>80%)" variant="success" delay={0.6} />
           </div>
-          <div className="hidden md:block text-right">
-            <div className="text-sm text-gray-500">Time to Hire</div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-400 line-through text-sm">42 Days</span>
-              <span className="text-green-600 font-bold text-xl">12 Days</span>
-            </div>
+
+          <VerticalLine delay={0.7} />
+
+          <Node icon={UserCheck} label="Manager Interview" variant="primary" delay={0.8} />
+
+          <BranchCurve delay={0.9} />
+
+          <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+            <Node icon={XCircle} label="Reject" variant="danger" delay={1.0} />
+            <Node icon={Star} label="HIRE" variant="success" delay={1.0} />
           </div>
+
         </div>
+      </div>
 
-        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative">
-          <Stage icon={CheckCircle2} title="Candidate Accepts" subtitle="Interview invite accepted" delay={0.2} />
-          <Stage icon={Video} title="Round 1: AI Video" subtitle="Asynchronous video responses" delay={0.4} />
-          <Stage icon={BarChart} title="AI Scoring" subtitle="Ranked by relevance & sentiment" delay={0.6} />
-          
-          {/* Branching Visual */}
-          <div className="relative pl-8 pb-8">
-            <div className="absolute left-[19px] top-0 bottom-0 w-0.5 bg-blue-100"></div>
-            <div className="absolute left-0 top-0 w-10 h-10 bg-purple-100 text-purple-600 rotate-45 rounded-lg flex items-center justify-center border-4 border-white shadow-md z-10">
-              <Diamond className="w-5 h-5 -rotate-45" />
-            </div>
-            <div className="ml-6 grid grid-cols-2 gap-4">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 }}
-                className="bg-green-50 border border-green-100 p-3 rounded-lg"
-              >
-                <div className="text-xs font-bold text-green-700 mb-1">Score &gt; 80%</div>
-                <div className="flex items-center gap-2 text-xs text-green-600">
-                  <Calendar className="w-3 h-3" /> Auto-Schedule Round 2
-                </div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
-                className="bg-red-50 border border-red-100 p-3 rounded-lg opacity-60"
-              >
-                <div className="text-xs font-bold text-red-700 mb-1">Score &lt; 80%</div>
-                <div className="flex items-center gap-2 text-xs text-red-600">
-                  <X className="w-3 h-3" /> Auto-Reject
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
-          <Stage icon={User} title="Hiring Manager Interview" subtitle="Live interview with team" delay={1.2} />
-          
-          <div className="relative pl-8">
-            <div className="absolute left-0 top-0 w-10 h-10 bg-purple-100 text-purple-600 rotate-45 rounded-lg flex items-center justify-center border-4 border-white shadow-md z-10">
-              <Diamond className="w-5 h-5 -rotate-45" />
-            </div>
-            <div className="ml-6 grid grid-cols-2 gap-4">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.4 }}
-                className="bg-green-600 text-white p-4 rounded-xl shadow-lg"
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <Star className="w-4 h-4 fill-current" />
-                  <span className="font-bold text-sm">HIRE</span>
-                </div>
-                <p className="text-xs text-green-100">Send Offer Letter</p>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.5 }}
-                className="bg-gray-100 text-gray-500 p-4 rounded-xl border border-gray-200"
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <Mail className="w-4 h-4" />
-                  <span className="font-bold text-sm">REJECT</span>
-                </div>
-                <p className="text-xs">Personalized Email</p>
-              </motion.div>
-            </div>
-          </div>
+      {/* Metric */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-6 py-5 rounded-lg border border-gray-100 shadow-sm">
+        <div className="text-xs text-gray-500">Time to Hire</div>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-400 line-through text-xs">42 days</span>
+          <span className="text-green-600 font-bold">12 days</span>
         </div>
       </div>
     </div>
