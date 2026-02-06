@@ -2,6 +2,8 @@ import { Helmet } from 'react-helmet';
 import HeroSection from '../components/HeroSection';
 import HowItWorksSection from '../components/HowItWorksSection';
 import ImpactResults from '../components/ImpactResults';
+import BenefitsSection from '../components/BenefitsSection';
+import LogoSliderSection from '../components/LogoSliderSection';
 
 function LandingPage() {
   return (
@@ -17,6 +19,8 @@ function LandingPage() {
             <HeroSection />
             <HowItWorksSection />
             <ImpactResults />
+            <BenefitsSection />
+            <LogoSliderSection />
         </div>
     </>
   );
