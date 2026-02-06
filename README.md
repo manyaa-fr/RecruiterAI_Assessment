@@ -1,0 +1,2 @@
+# RecruiterAI 
+RecruiterAI is an AI-powered recruitment tool designed to streamline the hiring process by automating candidate sourcing, screening, and engagement. It leverages advanced machine learning algorithms to identify top talent, assess candidate fit, and enhance communication with potential hires.
