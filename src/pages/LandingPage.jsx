@@ -5,6 +5,7 @@ import ImpactResults from '../components/ImpactResults';
 import BenefitsSection from '../components/BenefitsSection';
 import LogoSliderSection from '../components/LogoSliderSection';
 import TestimonialsSection from '../components/TestimonialsSection';
+import FAQSection from '../components/FAQSection';
 
 function LandingPage() {
   return (
@@ -23,6 +24,7 @@ function LandingPage() {
             <BenefitsSection />
             <LogoSliderSection />
             <TestimonialsSection />
+            <FAQSection />
         </div>
     </>
   );
