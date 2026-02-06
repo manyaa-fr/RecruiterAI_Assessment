@@ -4,6 +4,7 @@ import HowItWorksSection from '../components/HowItWorksSection';
 import ImpactResults from '../components/ImpactResults';
 import BenefitsSection from '../components/BenefitsSection';
 import LogoSliderSection from '../components/LogoSliderSection';
+import TestimonialsSection from '../components/TestimonialsSection';
 
 function LandingPage() {
   return (
@@ -21,6 +22,7 @@ function LandingPage() {
             <ImpactResults />
             <BenefitsSection />
             <LogoSliderSection />
+            <TestimonialsSection />
         </div>
     </>
   );
